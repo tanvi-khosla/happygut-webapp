@@ -4,6 +4,7 @@ https://happygut.herokuapp.com/
 
 The website has two types of users - admin and regular user
 
+<img src = '/website-images/user-not-logged-in-home.png' width = '700'>
 This is the home page for a user who is not logged in
 
 The user can log in using the log in page or click on register to make an account
