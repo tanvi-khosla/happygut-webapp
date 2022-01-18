@@ -1,0 +1,63 @@
+{% extends "happygut/base.html" %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static "css/addedit.css" %}"/>{% endblock %}
+{% block page-title %}Add an Article{% endblock %}
+
+{#nav bar#}
+{% block nav-links %}
+    <ul>
+        <li><a href="{% url 'happygut:home' %}">Home</a></li>
+        <li>
+            <a class="current" href="{% url 'happygut:articles' 'date' %}">Articles</a>
+        </li>
+        <li><a href="{% url 'happygut:shop' %}">Shop</a></li>
+    </ul>
+{% endblock %}
+
+{#content add info form#}
+{% block content %}
+    <main>
+        <div class="addedit-form">
+            <form  method="POST" action="{% url 'happygut:add' %}" >
+                {% csrf_token %}
+                <label for="image">Add image link</label>
+                <input
+                        name="image"
+                        type="text"
+                        placeholder="Add image address here"
+
+                required/>
+
+                <label for="heading">Article Heading</label>
+                <input
+                        name="heading"
+                        type="text"
+                        placeholder="Add article heading here"
+
+                required/>
+
+                <label for="adata">Give the users a sneak peak of your article</label>
+                <br/>
+                <br/>
+                <textarea
+                        name="adata"
+                        rows="5"
+                        cols="165"
+                ></textarea>
+
+                <label for="data">Type your article here..</label>
+                <br/>
+                <br/>
+                <textarea
+                        name="data"
+                        rows="10"
+                        cols="165"
+                ></textarea>
+                <br/>
+                <br/>
+                <button class="submit" type="submit" value="Submit">Submit</button>
+            </form>
+        </div>
+    </main>
+{% endblock %}

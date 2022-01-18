@@ -1,0 +1,121 @@
+{% extends "happygut/base.html" %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static "css/product-list.css" %}"/>{% endblock %}
+{% block page-title %}Shop{% endblock %}
+
+{% block nav-links %}
+    <ul>
+        <li><a href="{% url 'happygut:home' %}">Home</a></li>
+        <li>
+            <a href="{% url 'happygut:articles' 'date' %}">Articles</a>
+        </li>
+        <li><a class="current" href="{% url 'happygut:shop' %}">Shop</a></li>
+    </ul>
+{% endblock %}
+{% block search-bar %}
+    <form method="GET" action="{% url 'happygut:search' %}">
+          <input
+            type="text"
+            name="search-term"
+            class="search-term"
+            placeholder="Search here"
+          />
+          <button name="submit" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+{% endblock %}
+
+{% block content %}
+    <main>
+        <div id="left">
+            <div id="title">
+                <!-- Filter side-bar -->
+                <div id="icon"><i class="fas fa-filter"></i></div>
+                <div id="icon-name"><p>Filter options</p></div>
+            </div>
+            <div id="categories">
+
+                <div class="category">
+                    {% for option in options %}
+                        <div class="category-name">
+                            <p>{{ option.category_name }}</p>
+                        </div>
+                        <div class="category-options">
+
+                            <ul>
+                                <li>
+                                    <label><input type="checkbox"/>{{ option.category_option1 }}</label>
+                                </li>
+                                <li>
+                                    <label><input type="checkbox"/>{{ option.category_option2 }}</label>
+                                </li>
+                                <li>
+                                    <label><input type="checkbox"/>{{ option.category_option3 }}</label>
+                                </li>
+                                <li>
+                                    <label><input type="checkbox"/>{{ option.category_option4 }}</label>
+                                </li>
+                            </ul>
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+
+        <!-- right part of the page -->
+        <div id="right">
+            <div id="right-heading">
+                <div class="box" id="shop-title"><p>Shop</p></div>
+                <div class="box" id="cart-icon">
+                    <button><i class="fas fa-shopping-cart"></i></button>
+                </div>
+            </div>
+        <div class="boxmessage">{% if messages %}
+            <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}</div>
+            <!-- all products to shop -->
+            <div id="all-products">
+
+                {% for product in products %}
+                    <div class="trial">
+                    <a href="{% url 'happygut:detail' product.id  %}">
+                        <div class="product">
+                            <div class="image">
+                                <img
+                                        alt="product-image"
+                                        src="{{ product.product_image }}"
+                                />
+                            </div>
+                            <div class="details">
+                                <p>{{ product.brand_name }}</p>
+                                <p>{{ product.product_name }}</p>
+                                <p>{{ product.price }} <i class="fas fa-cart-plus"></i></p>
+                            </div>
+                        </div>
+                    </a>
+
+                    <div class="del-it">
+                    {% if request.session.role == "admin" %}
+                        <form class="delete-admin" method="POST" action="{% url 'happygut:delete' product.id %}">
+                        {% csrf_token %}
+                        <input value="{{ product.id }}" type="hidden">
+                            <button onclick="return confirm('Are you sure you want to delete this item?');" type="submit">Delete Product</button>
+                        </form>
+                    {% endif %}
+                    </div>
+                    </div>
+                {% endfor %}
+
+
+            </div>
+
+        </div>
+    </main>
+{% endblock %}

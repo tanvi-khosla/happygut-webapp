@@ -1,0 +1,139 @@
+{% extends "happygut/base.html" %}
+{% load static %}
+{% block css %}<link rel="stylesheet" href="{% static "css/alt-home.css" %}" />{% endblock %}
+{% block page-title %}Home{% endblock %}
+
+{% block nav-links %}
+     <ul>
+          <li><a class="current" href="{% url 'happygut:home' %}">Home</a></li>
+          <li>
+            <a href="{% url 'happygut:articles' '-date' %}">Articles</a>
+          </li>
+          <li><a href="{% url 'happygut:shop' %}">Shop</a></li>
+        </ul>
+{% endblock %}
+{% block search-bar %}
+    <form method="GET" action="{% url 'happygut:search' %}">
+          <input
+            type="text"
+            name="search-term"
+            class="search-term"
+            placeholder="Search here"
+          />
+          <button name="submit" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+{% endblock %}
+
+{% block content %}
+    <main>
+        <!-- left part of the page -->
+        <div class="left">
+            <!-- first half of the left side of the page -->
+            <div class="l-one">
+                <h3>Articles to start your gut healing journey</h3>
+                <div id="posts">
+                    {% for post in posts %}
+                        <div class="post">
+                            <div class="post-media">
+                                <img
+                                        alt="recipe"
+                                        src="{{ post.image }}"
+                                />
+                            </div>
+
+                            <div class="post-content">
+                                <div class="heading">
+                                    {{ post.heading }}
+                                </div>
+                                <div class="data">
+                                    {{ post.adata }}
+                                    <br/>
+                                    <a href="{% url 'happygut:login' %}">Read more</a>
+                                </div>
+                                <div class="author-date">
+                                    <div class="author-name"><a
+                                            href="{% url 'users:profile' post.user.username %}">{{ post.user.details.firstname }} {{ post.user.details.lastname }}</a>
+                                    </div>
+                                    <div class="date"><p>{{ post.date }}</p></div>
+                                </div>
+                                <div class="like-comment">
+                                    <i class="fas fa-heart"></i>
+                                    {{ post.likes }}
+                                    {#                  <i class="far fa-comment"></i>#}
+                                    {#                  {{ posts.1.comments }}#}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    {##}
+                    {#              <div class="post">#}
+                    {#          <!-- the image used for the article thumbnail -->#}
+                    {#          <div class="post-media">#}
+                    {#            <img#}
+                    {#              alt="aloevera"#}
+                    {#              src="{{ posts.2.image }}"#}
+                    {#            />#}
+                    {#          </div>#}
+                    {#          <div class="post-content">#}
+                    {#            <div class="heading">#}
+                    {#              {{ posts.2.heading }}#}
+                    {#            </div>#}
+                    {#            <div class="data">#}
+                    {#              {{ posts.2.adata }}#}
+                    {#              <br />#}
+                    {#              <a href="{% url 'happygut:login' %}">Read more</a>#}
+                    {#            </div>#}
+                    {#            <div class="author-date">#}
+                    {#              <div class="author-name"><a href="{% url 'users:profile' posts.2.user.username  %}">{{ posts.2.user.details.firstname }} {{ posts.2.user.details.lastname }}</a></div>#}
+                    {#              <div class="date"><p>{{ posts.2.date }}</p></div>#}
+                    {#            </div>#}
+                    {#            <div class="like-comment">#}
+                    {#              <i class="fas fa-heart"></i>#}
+                    {#              {{ posts.2.likes }}#}
+                    {#              <i class="far fa-comment"></i>#}
+                    {#              {{ posts.2.comments }}#}
+                    {#            </div>#}
+                    {#          </div>#}
+                    {#        </div>#}
+                    {#          </div>#}
+                    {#        </div>#}
+
+                </div>
+            </div>
+        </div>
+
+                <!-- right section of the page -->
+                {#      <div class="right">#}
+                {#        <div class="r-one">#}
+                {#          <h3>Topics that might interest you</h3>#}
+                {#          <ul>#}
+                {#            <li><a>Probiotics</a></li>#}
+                {#            <li><a>Indian Gooseberry</a></li>#}
+                {#            <li><a>Yoga</a></li>#}
+                {#            <li><a>Mind-Gut Connection</a></li>#}
+                {#            <li><a>Yogalates</a></li>#}
+                {#          </ul>#}
+                {#        </div>#}
+                {##}
+                {#        <div class="image-one">#}
+                {#          <img#}
+                {#            src="https://pbs.twimg.com/media/D7yynKVWsAA1Iuf.jpg"#}
+                {#            alt="quote"#}
+                {#          />#}
+                {#        </div>#}
+                {##}
+                {#        <div class="r-two">#}
+                {#          <h3>Discover more topics you may like</h3>#}
+                {#          <ul>#}
+                {#            <li><a>Detox</a></li>#}
+                {#            <li><a>Juice cleanse</a></li>#}
+                {#            <li><a>Yoga</a></li>#}
+                {#            <li><a>Mind-Gut Connection</a></li>#}
+                {#            <li><a>Yogalates</a></li>#}
+                {#          </ul>#}
+                {#        </div>#}
+                {#      </div>#}
+    </main>
+{% endblock %}

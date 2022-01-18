@@ -1,0 +1,119 @@
+{% extends "happygut/base.html" %}
+{% load static %}
+{% load humanize %}
+{% block css %}
+    <link rel="stylesheet" href="{% static "css/articles.css" %}"/>{% endblock %}
+{% block page-title %}Articles{% endblock %}
+
+{% block nav-links %}
+    <ul>
+        <li><a href="{% url 'happygut:home' %}">Home</a></li>
+        <li>
+            <a class="current" href="{% url 'happygut:articles' '-date' %}">Articles</a>
+        </li>
+        <li><a href="{% url 'happygut:shop' %}">Shop</a></li>
+    </ul>
+{% endblock %}
+{% block search-bar %}
+    <form method="GET" action="{% url 'happygut:search' %}">
+        <input
+                type="text"
+                name="search-term"
+                class="search-term"
+                placeholder="Search here"
+        />
+        <button name="submit" type="submit">
+            <i class="fas fa-search"></i>
+        </button>
+    </form>
+{% endblock %}
+
+{% block content %}
+
+    <main>
+        <div id="left">
+            {#            <div id="headings">#}
+            {#                <div class="headings-part">#}
+            {#                    <p class="current">#}
+            {#                        <a href="#Food-and-Nutrition">Food and Nutrition</a>#}
+            {#                    </p>#}
+            {#                    <p><a href="#Recipes">Recipes</a></p>#}
+            {#                </div>#}
+            {#                <div class="headings-part">#}
+            {#                    <p><a href="#Recommendations">Recommendations</a></p>#}
+            {#                    <p><a href="#Fitness">Fitness</a></p>#}
+            {#                </div>#}
+            {#            </div>#}
+            <div class="sort-buttons">
+                <form class="sort-regular" action="{% url 'happygut:articles' 'heading' %}">
+                    <button>Sort Alphabetically</button>
+                </form>
+                <form class="sort-regular" action="{% url 'happygut:articles' 'likes' %}">
+                    <button>Sort by likes</button>
+                </form>
+                {% if request.session.role == "regular" %}
+                    <div class="add">
+                        <form class="add-regular" action="{% url 'happygut:add' %}">
+                            {% csrf_token %}
+                            <button type="submit">Add an article</button>
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="saved-topics">
+                <p class="topics-u-saved">Articles you saved</p>
+
+                {% for topic in topics %}
+                    <div class="topic-list">{{ topic.saved_heading }}</div>
+                {% endfor %}
+
+            </div>
+        </div>
+
+        <div id="right">
+            {% for post in posts %}
+                <div class="post">
+                    <!-- the image used for the article thumbnail -->
+                    <div class="post-media">
+                        <img
+                                alt="aloevera"
+                                src="{{ post.image }}"
+                        />
+                        <button class="saved" data-article-id="{{ post.id }}"
+                                data-ajax-url="{% url "happygut:saved" %}"><i class="far fa-bookmark"></i></button>
+                    </div>
+                    <div class="post-content">
+                        <div class="heading">
+                            {{ post.heading }}
+                        </div>
+                        <div class="data">
+                            {{ post.adata }}
+                            <br>
+                            {% if request.session.username %}
+                            <a class="readmore" href="{% url 'happygut:article-detail' post.id %}">Read more</a>
+                            {% endif %}
+                        </div>
+                        <div class="author-date">
+                            <div class="author-name"><a
+                                    href="{% url 'users:profile' post.user.username %}">{{ post.user.details.firstname }} {{ post.user.details.lastname }}</a>
+                            </div>
+                            <div class="date"><p>{{ post.date|naturaltime }}</p></div>
+                            <i class="fas fa-heart">{{ post.likes }}</i>
+                            {% if request.session.role == "regular" %}
+                                <div class="edit-regular"><a href="{% url 'happygut:edit' post.id %}">Edit this
+                                    article</a></div>
+                            {% endif %}
+                        </div>
+
+                        <div class="like-comment">
+                            {#                                  <i class="far fa-comment"></i>#}
+                            {#                                  {{ post.comments }}#}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </main>
+
+{% endblock %}

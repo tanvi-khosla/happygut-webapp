@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+            integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+            crossorigin="anonymous"
+    />
+    <script
+            src="https://code.jquery.com/jquery-3.6.0.js"
+            integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+            crossorigin="anonymous"
+    ></script>
+
+    <link rel="stylesheet" href="{% static "css/reset.css" %}"/>
+    {% block css %}{% endblock %}
+    {% block js %}{% endblock %}
+    <script src="{% static "js/detail.js" %}"></script>
+    <script src="{% static "js/search.js" %}"></script>
+    <script src="{% static "js/articles.js" %}"></script>
+    <script src="{% static "js/index.js" %}"></script>
+
+    <title>Happy Gut | {% block page-title %}{% endblock %}</title>
+</head>
+<body>
+<!-- Header -->
+<header>
+    <!-- site brand -->
+    <div id="branding">
+        <div id="up">
+            <div id="name"><h1>happy gut</h1></div>
+            <div>
+                <img
+                        alt="logo"
+                        src="https://images.squarespace-cdn.com/content/v1/6052705ae77e6d3255abe996/1621968573124-BXOFMDQ5J55L3VICV7ST/Gut+Health+Icon+2.jpg"
+                />
+            </div>
+        </div>
+{#        <div id="sub-name"><h4>happy gut. happy mind. happy you</h4></div>#}
+    </div>
+
+<div class="nav-links">
+        {% block nav-links %}{% endblock %}
+    </div>
+
+    <!-- The user's profile icon -->
+    {% if request.session.username  %}
+        <div id="user">
+            <h4>
+{#                <i class="far fa-user-circle"></i>#}
+                hello <a href="{% url "users:profile" request.session.username %}">{{ request.session.username }}</a>
+                <a href="{% url 'users:logout_main' %}">| Logout </a>
+            </h4>
+        </div>
+    {% else %}
+        <div id="user">
+            <h4>
+{#                <i class="far fa-user-circle"></i>#}
+                <a href="{% url 'happygut:login' %}"> Login |</a>
+            </h4>
+        </div>
+    {% endif %}
+    <div class="search-bar">
+            {% block search-bar %}{% endblock %}
+        </div>
+</header>
+<!-- Navigation bar and search bar -->
+{#<nav>#}
+{#    <div class="nav-links">#}
+{#        {% block nav-links %}{% endblock %}#}
+{#    </div>#}
+{##}
+{#    <div class="search-bar">#}
+{#        {% block search-bar %}{% endblock %}#}
+{#    </div>#}
+{##}
+{#</nav>#}
+
+<!-- content part -->
+{% block content %}
+
+{% endblock %}
+
+<!-- footer -->
+<footer>
+    <div class="footer">
+        <ul>
+            <li><a href="#Contact-Us">Contact Us</a></li>
+            <li><a href="#Work-with-us">Work with us</a></li>
+
+            <li><a href="#Advertise">Advertise</a></li>
+            <li><a href="#Privacy-Policy">Privacy Policy</a></li>
+        </ul>
+    </div>
+</footer>
+</body>
+</html>

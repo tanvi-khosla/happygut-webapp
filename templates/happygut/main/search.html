@@ -1,0 +1,36 @@
+{% extends "happygut/base.html" %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static "css/search.css" %}"/>{% endblock %}
+{% block page-title %}Product Details{% endblock %}
+
+{% block nav-links %}
+    <ul>
+        <li><a href="{% url 'happygut:home' %}">Home</a></li>
+        <li>
+            <a href="{% url 'happygut:articles' 'date' %}">Articles</a>
+        </li>
+        <li><a href="{% url 'happygut:shop' %}">Shop</a></li>
+    </ul>
+{% endblock %}
+{% block search-bar %}
+    <form method="GET" action="{% url 'happygut:search' %}">
+        <input
+                type="text"
+                name="search-term"
+                class="search-term"
+                placeholder="Search here"
+        />
+        <button name="submit" type="submit">
+            <i class="fas fa-search"></i>
+        </button>
+    </form>
+{% endblock %}
+
+{% block content %}
+    <main>
+        <div class="container">
+            <p class="results"></p>
+        </div>
+    </main>
+{% endblock %}

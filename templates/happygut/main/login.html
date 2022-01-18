@@ -1,0 +1,35 @@
+{% extends "happygut/base.html" %}
+{% load static %}
+{% block css %}<link rel="stylesheet" href="{% static "css/login.css" %}" />{% endblock %}
+{% block page-title %}Login/Register{% endblock %}
+
+{% block content %}
+     <main>
+      <div class="container">
+          <form id="login-box" action="{% url 'users:login_main' %}" method="POST">
+        <div class="container-in">
+            {% csrf_token %}
+          <label for="username"><b>Username</b></label>
+          <input
+            type="text"
+            placeholder="Enter Username"
+            name="username"
+            required
+          />
+          <label for="psw"><b>Password</b></label>
+          <input
+            type="password"
+            placeholder="Enter Password"
+            name="password"
+            required
+          />
+          <div class="login-register">
+              <button type="submit">Login</button>
+{#            <p>or</p>#}
+            <a href="{% url 'users:register' %}">Register</a>
+          </div>
+        </div>
+      </form>
+      </div>
+    </main>
+{% endblock %}

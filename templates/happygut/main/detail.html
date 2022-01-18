@@ -1,0 +1,154 @@
+{% extends "happygut/base.html" %}
+{% load static %}
+{% block css %}<link rel="stylesheet" href="{% static "css/detail.css" %}" />{% endblock %}
+{% block page-title %}Product Details{% endblock %}
+
+{% block nav-links %}
+     <ul>
+          <li><a href="{% url 'happygut:home' %}">Home</a></li>
+          <li>
+            <a  href="{% url 'happygut:articles' 'date' %}">Articles</a>
+          </li>
+          <li><a href="{% url 'happygut:shop' %}">Shop</a></li>
+     </ul>
+{% endblock %}
+{% block search-bar %}
+    <form method="GET" action="{% url 'happygut:search' %}">
+          <input
+            type="text"
+            name="search-term"
+            class="search-term"
+            placeholder="Search here"
+          />
+          <button name="submit" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+{% endblock %}
+
+{% block content %}
+    <main>
+      <div id="breadcrumb-menu">
+        <ul class="breadcrumb">
+          <li><a href="{% url 'happygut:shop' %}">All Products</a></li>
+          <li>Juices</li>
+        </ul>
+      </div>
+      <!-- images of the product viewed by the user -->
+      <!-- www.cosmix.in -->
+      <div id="product-view">
+        <div id="left">
+          <div id="product-image">
+            <img
+              id="main-image"
+              alt="product-image"
+              src="{{ product.product_image }}"
+            />
+          </div>
+          <div id="sub-images">
+            <img
+              class="sub-image1"
+              alt="product-image"
+              src="{{ product.sub_image1 }}"
+            />
+            <img
+              class="sub-image2"
+              alt="product-image"
+              src="{{ product.sub_image2 }}"
+            />
+            <img
+              class="sub-image3"
+              alt="product-image"
+              src="{{ product.sub_image3 }}"
+            />
+          </div>
+        </div>
+        <!-- product description -->
+        <div id="right">
+          <div id="product-name">
+            <p>{{ product.product_name }}</p>
+          </div>
+
+          <div id="ingredients">
+            <p>Ingredients</p>
+            <ul>
+              <li>{{ product.i1 }}</li>
+              <li>{{ product.i2 }}</li>
+              <li>{{ product.i3 }}</li>
+            </ul>
+          </div>
+          <div id="manual">
+            <p>Quantity: 1 teaspoon a day.</p>
+            <p>
+              When to have: First thing in the morning is ideal. But you can mix
+              it with your meals, in case of a sensitive stomach
+            </p>
+            <p>
+              Taste: Earthy Pairs well with: Buttermilk, curd, warm water &
+              honey.
+            </p>
+          </div>
+          <div class="product-rating">
+            <p class="rating">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i
+              ><i class="fas fa-star"></i><i class="fas fa-star"></i
+              ><i class="fas fa-star"></i>
+            </p>
+            <p class="format">{{ product.reviews }}</p>
+          </div>
+          <div id="price">
+            <p>{{ product.price }}</p>
+
+            <button><i class="fas fa-cart-plus"></i></button>
+          </div>
+        </div>
+      </div>
+      <!-- comment section for users to leave reviews -->
+      <div id="comment-section">
+        <p class="reviews">Reviews</p>
+        <div class="post">
+          <form action="/action_page.php">
+            <div class="my-comment">
+              <i class="fas fa-portrait usericon"></i
+              ><input
+                type="text"
+                id="review"
+                placeholder="Give your opinion on the product here"
+              />
+            </div>
+            <br /><br />
+            <input type="submit" value="Post" />
+          </form>
+        </div>
+        <!-- reviews by other people -->
+        <div class="others-posts">
+          <div class="review">
+            <i class="fas fa-portrait usericon"></i>
+            <p class="comment">
+              I must say I have gastric issues and Happy Gut has helped me in
+              lot of ways resetting the issues I had .. I even give it to my dad
+              and mom.. dad recently had constipation issues since he takes lots
+              of medicines but happy gut solved the problem for him :).
+            </p>
+          </div>
+
+          <div class="review">
+            <i class="fas fa-portrait usericon"></i>
+            <p class="comment">
+              Happy gut! This is really a magic mix. I could literally feel the
+              changes in my body. Thank you so much for this one!
+            </p>
+          </div>
+
+          <div class="review">
+            <i class="fas fa-portrait usericon"></i>
+            <p class="comment">
+              Really a game-changer for someone who doesn't really give a
+              thought to what goes on to the plate! Thank you for such an
+              amazing product, looking forward to trying the others!
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+{% endblock %}

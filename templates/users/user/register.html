@@ -1,0 +1,65 @@
+{% extends "happygut/base.html" %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static "css/register.css" %}"/>
+    <link rel="stylesheet" href="{% static "css/reset.css" %}"/>
+{% endblock %}
+
+{% block page-title %}Register{% endblock %}
+
+{% block content %}
+    <main>
+        <div class="container">
+            <div class="welcome">
+                <img
+                        alt="welcome"
+                        src="https://media.istockphoto.com/vectors/healthy-lifestyle-food-diet-and-weight-loss-banner-with-a-dish-of-vector-id1212576552?k=20&m=1212576552&s=612x612&w=0&h=xH5fIrRQx94xLFq7-cD7haRtpgMZA8VeH3JNUvudxpk="
+                />
+            </div>
+            <div class="register">
+                <form class="reg-form" method="post" action="{% url 'users:register' %}">
+                    {% csrf_token %}
+                    <div class="name">
+                        <div class="firstname">
+                            <label for="firstname">First Name</label>
+                            <input type="text" id="firstname" name="firstname" required/>
+                        </div>
+                        <div class="lastname">
+                            <label for="lastname">Last Name</label>
+                            <input type="text" id="lastname" name="lastname" required/>
+                        </div>
+                    </div>
+                    <div class="pronouns">
+                        <label for="pronouns">Pronouns: </label>
+                        <select name="pronouns" id="pronouns">
+                            <optgroup label="select your pronouns">
+                                <option value="she/her">she/her</option>
+                                <option value="he/his">he/his</option>
+                                <option value="them/they">them/they</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="not-name">
+                        <div class="email">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required/>
+                        </div>
+                        <div class="uname">
+                            <label for="uname">Username</label>
+                            <input type="text" id="uname" name="uname" required/>
+                        </div>
+                        <div class="password">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" required/>
+                        </div>
+                        <div class="submit">
+                            <button type="submit">Register</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+{% endblock %}

@@ -1,0 +1,128 @@
+{% extends "happygut/base.html" %}
+{% load static %}
+{% load humanize %}
+{% block css %}
+    <link rel="stylesheet" href="{% static "css/article-detail.css" %}"/>{% endblock %}
+{% block js %}
+    <script src="{% static "js/article-detail.js" %}"></script>{% endblock %}
+{% block page-title %}Article{% endblock %}
+
+{% block nav-links %}
+    <ul>
+        <li><a href="{% url 'happygut:home' %}">Home</a></li>
+        <li>
+            <a href="{% url 'happygut:articles' 'date' %}">Articles</a>
+        </li>
+        <li><a href="{% url 'happygut:shop' %}">Shop</a></li>
+    </ul>
+{% endblock %}
+
+{#article details#}
+{% block content %}
+    <main>
+        <div class="post">
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <div class="heading">{{ post.heading }}</div>
+
+            <div class="post-media">
+                <img alt="aloevera" src="{{ post.image }}"/>
+            </div>
+
+            <div class="data">
+                <pre>{{ post.full }}</pre>
+                <br/></div>
+            <div class="like-comment">
+                <i class="fas fa-heart">{{ post.likes }}</i>
+                {#                                  <i class="far fa-comment"></i>#}
+                {#                                  {{ post.comments }}#}
+            </div>
+            <div class="author-date">
+                <div class="author-name"><a
+                        href="{% url 'users:profile' post.user.username %}">{{ post.user.details.firstname }} {{ post.user.details.lastname }}</a>
+                </div>
+                <div class="" date>{{ post.date|naturaltime }}</div>
+            </div>
+
+        </div>
+
+
+        <div id="comment-section">
+            <div class="insert">
+                <div class="div-heading"><p class="comments">Comment</p></div>
+                <div class="comment-form">
+                    {% csrf_token %}
+                    <div class="newcomment">
+                        <div class="comment-label"><label for="new_comment"><i
+                                class="far fa-user">{{ user.username }}</i></label>
+                        </div>
+                        <div class="comment-input"><input size="100" type="text" class="new_comment" name="new_comment"
+                                                          required/></div>
+                    </div>
+                    <div class="date-button">
+                        {#                        <div class="created">created</div>#}
+                        <div class="post-comment">
+                            <button class="post-button" data-article-id="{{ post.id }}"
+                                    data-ajax-url="{% url "happygut:add_comment" %}" type="submit">Post
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="existing">
+                {% for comment in comments %}
+                    <div class="existing_comment">
+                        <div class='added-comment-label'>
+                            <label for='added_comment'>
+                                <i class='far fa-user'></i>
+                                <a class="link"
+                                   href="{% url 'users:profile' comment.user.username %}">{{ comment.user.username }}</a>
+                            </label>
+
+                        </div>
+
+
+                        <p class='added-comment-input'>{{ comment.new_comment }}</p>
+
+                        <div class="hidden-input">
+                            <input class="new_comment1" name="new_comment1"  size="100" type="text"/>
+                            <button data-comment-id="{{ comment.id }}"
+                                    data-ajax-url="{% url "happygut:edit_comment" %}" class="save">post
+                            </button>
+                        </div>
+                        <div class='editdel'>
+                            {% if request.session.username  == comment.user.username or request.session.username  == "admin" %}
+                                <button data-comment-id="{{ comment.id }}" class='edit_comment'>edit</button>
+
+                                <button data-comment-id="{{ comment.id }}"
+                                        data-ajax-url="{% url "happygut:del_comment" %}"
+                                        class='del-comment'>delete
+                                </button>
+                            {% endif %}
+
+                            <div class='created'>{{ comment.created|naturaltime }}</div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="nocom">No comments yet...</p>
+
+
+                {% endfor %}
+            </div>
+            {#                <div class="added-comments">#}
+            {#                    <div class="added-comment-label"><label for="added_comment"><i class="far fa-user"> username</i></label></div>#}
+            {#                    <div class="added-comment-input">test comment test comment test comment test comment</div>#}
+            {#                </div>#}
+        </div>
+        {#            <div class="editdel">#}
+        {#                <a href="" class="edit-comment">edit</a>#}
+        {#                <a href="" class="del-comment">delete</a>#}
+        {#            </div>#}
+        </div>
+    </main>
+{% endblock %}

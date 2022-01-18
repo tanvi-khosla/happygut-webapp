@@ -1,0 +1,124 @@
+{% extends "happygut/base.html" %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static "css/profile.css" %}"/>{% endblock %}
+{% block js %}
+    <script src="{% static "js/profile.js" %}"></script>{% endblock %}
+{% block page-title %}{{ user.username }}'s Profile{% endblock %}
+
+{% block nav-links %}
+    <ul>
+        <li><a href="{% url 'happygut:home' %}">Home</a></li>
+        <li>
+            <a href="{% url 'happygut:articles' '-date' %}">Articles</a>
+        </li>
+        <li><a href="{% url 'happygut:shop' %}">Shop</a></li>
+    </ul>
+{% endblock %}
+{% block search-bar %}
+    <form method="GET" action="{% url 'happygut:search' %}">
+        <input
+                type="text"
+                name="search-term"
+                class="search-term"
+                placeholder="Search here"
+        />
+        <button name="submit" type="submit">
+            <i class="fas fa-search"></i>
+        </button>
+    </form>
+{% endblock %}
+
+{% block content %}
+    <main>
+        <div class="top">
+
+            <div class="profile-pic">
+                <img alt="user image"
+                     src="https://jmcp.edu.pk/wp-content/uploads/2020/10/blank-profile-picture-973460_1280-300x300-1.jpg"
+                />
+            </div>
+        </div>
+        <div class="bottom">
+            <div class="personal-info">
+                <div class="one">
+                    <div class="username">{{ user.username }}</div>
+                    <div class="pronouns">{{ user.details.pronouns }}</div>
+                </div>
+                <div class="two">
+                    <div class="firstname">{{ user.details.firstname }}</div>
+                    <div class="lastname">{{ user.details.lastname }}</div>
+                </div>
+                <div class="emailid">{{ user.email }}</div>
+                <div class="role">Role: {{ user.details.role }}</div>
+                {% if request.session.username  == user.username or request.session.username  == "admin"  %}
+                <div class="edit-info">
+                    <button type="button" id="modalBtn">Edit Information</button>
+                </div>
+                {% endif %}
+            </div>
+        {% if request.session.username %}
+            <div class="feed">
+                <div class="feed-title">Activity Feed</div>
+                {% include 'actions/action/feed.html' %}
+            </div>
+        {% endif %}
+        </div>
+        <div id="edit-modal">
+            <div class="modal-content">
+                <form method="POST" action="{% url 'users:edit_details' user.username %}">
+                    {% csrf_token %}
+                    <div class="name">
+                        <div class="firstname">
+                            <label for="firstname">First Name</label>
+                            <input type="text" id="firstname" name="firstname" value="{{ user.details.firstname }}"
+                                   required/>
+                        </div>
+                        <div class="lastname">
+                            <label for="lastname">Last Name</label>
+                            <input type="text" id="lastname" name="lastname" value="{{ user.details.lastname }}"  required/>
+                        </div>
+                    </div>
+                    <div class="pronouns">
+                            <label for="pronouns">Pronouns</label>
+                            <select name="pronouns" id="pronouns" >
+                                <optgroup label="select your pronouns">
+                                    <option value="{{ user.details.pronouns }}">{{ user.details.pronouns }}</option>
+                                    <option value="she/her">she/her</option>
+                                    <option value="he/his">he/his</option>
+                                    <option value="them/they">them/they</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                    <div class="not-name">
+                        {% if user.details.role == "admin" or request.session.username  == "admin"  %}
+                        <div class="role">
+                            <label for="role">Role</label>
+                            <select name="role" id="role" >
+                                <optgroup label="change role">
+                                    <option value="regular">regular</option>
+                                    <option value="admin">admin</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        {% endif %}
+                        <div class="email">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" value="{{ user.email }}" required/>
+                        </div>
+                        <div class="password">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" value="{{ user.password }}" required/>
+                        </div>
+                        <div class="actions">
+                            <div class="submit">
+                            <button type="submit">Edit</button>
+                        </div>
+                        <a class="return" id="return" href="">Go Back</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+{% endblock %}

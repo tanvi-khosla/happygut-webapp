@@ -1,0 +1,65 @@
+{% extends "happygut/base.html" %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static "css/addedit.css" %}"/>{% endblock %}
+{% block page-title %}Edit an article{% endblock %}
+
+{% block nav-links %}
+    <ul>
+        <li><a href="{% url 'happygut:home' %}">Home</a></li>
+        <li>
+            <a class="current" href="{% url 'happygut:articles' 'date' %}">Articles</a>
+        </li>
+        <li><a href="{% url 'happygut:shop' %}">Shop</a></li>
+    </ul>
+{% endblock %}
+
+{#edit post#}
+{% block content %}
+    <main>
+        <div class="addedit-form">
+            <form method="POST" action="{% url 'happygut:edit' post.id %}" >
+                {% csrf_token %}
+                <input value="{{ post.id }}" type="hidden">
+                <label for="image">Add image link</label>
+                <input
+                        type="text"
+                        name="image"
+                        placeholder="Add image address here"
+                        value="{{ post.image }}"
+                />
+
+                <label for="heading">Add post heading</label>
+                <input
+                        type="text"
+                        name="heading"
+                        placeholder="Add article heading here"
+                        value="{{ post.heading }}"
+                />
+
+                <label for="adata">Give the users a sneak peak of your article</label>
+                <br/>
+                <br/>
+                <textarea
+                        name="adata"
+                        rows="5"
+                        cols="165"
+                > {{ post.adata }}</textarea>
+                <br/>
+                <br/>
+
+                <label for="data">Type your article here..</label>
+                <br/>
+                <br/>
+                <textarea
+                        name="data"
+                        rows="10"
+                        cols="165"
+                > {{ post.full }}</textarea>
+                <br/>
+                <br/>
+                <button class="submit" type="submit" value="Submit">Submit</button>
+            </form>
+        </div>
+    </main>
+{% endblock %}

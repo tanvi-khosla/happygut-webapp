@@ -1,0 +1,18 @@
+{% load humanize %}
+{% load static %}
+{% block css %}<link rel="stylesheet" href="{% static "css/feed.css" %}" />{% endblock %}
+<ul>
+{% for action in actions %}
+    <li><a class="usercss" href='{% url 'users:profile' action.user.username  %}'>{{ action.user.username }}</a>
+        {{ action.verb }}
+        {% if action.target %}
+        <a class="target" href='{{ action.target.get_absolute_url }}'>"{{ action.target }}"</a>
+        {% endif %}
+        <br> <span class="time">({{ action.created|naturaltime }})</span>
+    </li>
+
+{% empty %}
+    <li>No activity yet</li>
+
+{% endfor %}
+</ul>

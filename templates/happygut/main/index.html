@@ -1,0 +1,135 @@
+{% extends "happygut/base.html" %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static "css/index.css" %}"/>{% endblock %}
+{% block js %}
+    <script src="{% static "js/index.js" %}"></script>{% endblock %}
+{% block page-title %}Home{% endblock %}
+
+{% block nav-links %}
+    <ul>
+        <li><a class="current" href="{% url 'happygut:home' %}">Home</a></li>
+        <li>
+            <a href="{% url 'happygut:articles' '-date' %}">Articles</a>
+        </li>
+        <li><a href="{% url 'happygut:shop' %}">Shop</a></li>
+    </ul>
+{% endblock %}
+{% block search-bar %}
+    <form method="GET" action="{% url 'happygut:search' %}">
+        <input
+                type="text"
+                name="search-term"
+                class="search-term"
+                placeholder="Search here"
+        />
+        <button name="submit" type="submit">
+            <i class="fas fa-search"></i>
+        </button>
+    </form>
+{% endblock %}
+
+{% block content %}
+    <main>
+        <!-- left part of the page -->
+        <div class="left">
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <!-- first half of the left side of the page -->
+            <div class="l-one">
+                <h3>Continue reading for user...</h3>
+                <div id="posts">
+
+                    <!-- https://www.yogajournal.com/ -->
+                    {% for post in posts %}
+                        <div class="post">
+                            <div class="post-media">
+                                <img
+                                        alt="recipe"
+                                        src="{{ post.image }}"
+                                />
+                            </div>
+
+                            <div class="post-content">
+                                <div class="heading">
+                                    {{ post.heading }}
+                                </div>
+                                <div class="data one">
+                                    <p>{{ post.adata }}</p>
+                                    <p class="test"></p>
+
+                                    {#                  <a href="{% url 'happygut:article-detail' 1 %}">Read here</a>#}
+                                    <button class="readone" data-article-id="{{ post.id }}"
+                                            data-ajax-url="{% url "happygut:opened" %}">Read here
+                                    </button>
+                                </div>
+                                <div class="more"></div>
+                                <div class="author-date">
+                                    <div class="author-name"><a
+                                            href="{% url 'users:profile' post.user.username %}">{{ post.user.details.firstname }} {{ post.user.details.lastname }}</a>
+                                    </div>
+                                    <div class="date"><p>{{ post.date }}</p></div>
+                                    <i class="fas fa-heart">{{ post.likes }}</i>
+                                </div>
+                                {#                <div class="like-comment">#}
+                                {#                  <i class="fas fa-heart"></i>#}
+                                {#                    {{ posts.0.likes }}#}
+                                {#                  <i class="far fa-comment"></i>#}
+                                {#                  {{ posts.0.comments }}#}
+                                {#                </div>#}
+                            </div>
+                        </div>
+                    {% endfor %}
+
+
+                    {#              <div class="post">#}
+                    {#              <div class="post-media">#}
+                    {#                <img#}
+                    {#                  alt="recipe"#}
+                    {#                  src="{{ posts.1.image }}"#}
+                    {#                />#}
+                    {#              </div>#}
+                    {##}
+                    {#              <div class="post-content">#}
+                    {#                <div class="heading">#}
+                    {#                  {{ posts.1.heading }}#}
+                    {#                </div>#}
+                    {#                <div class="data two">#}
+                    {#                  {{ posts.1.adata }}#}
+                    {#                  <br />#}
+                    {#                    href="{% url 'happygut:article-detail' 2 %}#}
+                    {#                    <button class="readtwo" data-article-id="{{ posts.1.id }}" data-ajax-url="{% url "happygut:opened" %}">Read here</button>#}
+                    {#                </div>#}
+                    {#                <div class="author-date">#}
+                    {#                  <div class="author-name"><a href="{% url 'users:profile' posts.1.user.username  %}">{{ posts.1.user.details.firstname }} {{ posts.1.user.details.lastname }}</a></div>#}
+                    {#                  <div class="date"><p>{{ posts.1.date }}</p></div>#}
+                    {#                    <i class="fas fa-heart">  {{ posts.1.likes }}</i>#}
+                    {#                </div>#}
+                    {#                <div class="like-comment">#}
+                    {#                  <i class="fas fa-heart">{{ posts.1.likes }}</i>#}
+                    {##}
+                    {#                  <i class="far fa-comment"></i>#}
+                    {#                  {{ posts.1.comments }}#}
+                    {#                </div>#}
+                </div>
+            </div>
+        </div>
+        </div>
+
+
+        </div>
+        <!-- Right column of the page -->
+        <div class="right">
+            <div class="feed">
+                <div class="feed-title">Activity Feed</div>
+                {% include 'actions/action/feed.html' %}
+            </div>
+        </div>
+
+    </main>
+{% endblock %}
